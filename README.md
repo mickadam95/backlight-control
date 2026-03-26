@@ -27,9 +27,10 @@ Supports:
 ## Installation (Gentoo Overlay)
 
 1. Add this repository as an overlay (example):
+https://github.com/mickadam95/backlight-control.git
+eselect repository https://github.com/mickadam95/backlight-control.git
 
-
-2. Install the package:
+3. Install the package:
 emerge --ask sys-power/backlight
 
 ---
