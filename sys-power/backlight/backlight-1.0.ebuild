@@ -2,6 +2,7 @@ DESCRIPTION="A lightweight, system-wide backlight control solution for Linux, de
 HOMEPAGE="https://github.com/mickadam95/backlight-control"
 IUSE="backlight_group"
 SLOT=1
+KEYWORDS="~amd64"
 
 pkg_setup() {
     # If the user wants a custom group, we create it safely BEFORE installation
