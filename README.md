@@ -26,8 +26,9 @@ Supports:
 
 ## Installation (Gentoo Overlay)
 
-1. Add this repository as an overlay (example):
+1. Add this repository as an overlay:
 https://github.com/mickadam95/backlight-control.git
+Example:
 eselect repository https://github.com/mickadam95/backlight-control.git
 
 3. Install the package:
