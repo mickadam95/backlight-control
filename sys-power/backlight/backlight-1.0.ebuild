@@ -22,16 +22,22 @@ src_install() {
 }
 
 pkg_postinst() {
+    # This reloads the rules into memory
     udev_reload
 
     if use backlight_group; then
-        elog "Udev rules installed. Members of the 'video' group can now"
-        elog "adjust brightness without sudo."
+        # This is the "Magic" part that was missing:
+        # It forces the kernel to apply the rules to the existing backlight device
+        ebegin "Updating backlight permissions"
+        udevadm trigger --action=add --subsystem-match=backlight
+        eend $?
+
+        elog "Udev rules installed and triggered. Members of the 'video' group"
+        elog "can now adjust brightness without sudo."
         elog "Ensure your user is in the group: gpasswd -a <user> video"
     else
         elog "Installation complete. No udev rules were installed."
-        elog "You will need root privileges (sudo) to adjust brightness."
-        elog "To enable group-based control, pull the 'backlight_group' USE flag."
+        elog "To enable group-based control, set USE='backlight_group'."
     fi
 }
 
