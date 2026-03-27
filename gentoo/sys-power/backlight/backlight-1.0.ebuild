@@ -1,8 +1,7 @@
-inherit udev user
-
 DESCRIPTION="A lightweight, system-wide backlight control solution for Linux, designed specifically for Gentoo systems using OpenRC or systems where a minimal footprint is desired."
 HOMEPAGE="https://github.com/mickadam95/backlight-control"
 IUSE="backlight_group"
+SLOT=1
 
 pkg_setup() {
     # If the user wants a custom group, we create it safely BEFORE installation
