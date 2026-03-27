@@ -1,41 +1,40 @@
-DESCRIPTION="A lightweight, system-wide backlight control solution for Linux, designed specifically for Gentoo systems using OpenRC or systems where a minimal footprint is desired."
-HOMEPAGE="https://github.com/mickadam95/backlight-control"
-IUSE="backlight_group"
-SLOT=1
-KEYWORDS="~amd64"
+EAPI=8
 
-pkg_setup() {
-    # If the user wants a custom group, we create it safely BEFORE installation
-    # Note: Gentoo conventionally uses the 'video' group for this, but if you 
-    # strictly want 'backlight', enewgroup is the safe way to do it.
-    if use backlight_group; then
-        enewgroup backlight
-    fi
-}
+inherit udev
+
+DESCRIPTION="Lightweight backlight control script with optional video group udev rules"
+HOMEPAGE="https://github.com/mickadam95/backlight-control"
+LICENSE="MIT"
+SLOT="0"
+KEYWORDS="~amd64"
+IUSE="backlight_group"
+
+S="${WORKDIR}"
 
 src_install() {
-    # 1. Install to /usr/bin, NOT /usr/local/bin. 
-    # (/usr/local is reserved for the system admin; Portage owns /usr).
+    # Always install the script
     dobin "${FILESDIR}/backlight.sh"
 
-    # 2. Install a GENERIC udev rule. 
-    # Packages should install rules to /lib/udev/rules.d, not /etc.
-    udev_dorules "${FILESDIR}/90-backlight.rules"
+    # Only install the udev rule if the user wants group permissions
+    if use backlight_group; then
+        udev_dorules "${FILESDIR}/90-backlight.rules"
+    fi
 }
 
 pkg_postinst() {
-    # 3. Print messages in postinst, otherwise they get lost in the build log.
-    elog "Installation complete."
-    
-    if use backlight_group; then
-        elog ""
-        elog "To allow your user to change brightness without sudo, add them to the group:"
-        elog "  gpasswd -a <username> backlight"
-        elog ""
-        elog "You may need to reboot or reload udev rules for permissions to apply:"
-        elog "  udevadm control --reload-rules && udevadm trigger"
-    fi
+    udev_reload
 
-    elog ""
-    elog "Set keybindings manually in your Desktop Environment."
+    if use backlight_group; then
+        elog "Udev rules installed. Members of the 'video' group can now"
+        elog "adjust brightness without sudo."
+        elog "Ensure your user is in the group: gpasswd -a <user> video"
+    else
+        elog "Installation complete. No udev rules were installed."
+        elog "You will need root privileges (sudo) to adjust brightness."
+        elog "To enable group-based control, pull the 'backlight_group' USE flag."
+    fi
+}
+
+pkg_postrm() {
+    udev_reload
 }
