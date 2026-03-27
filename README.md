@@ -27,6 +27,7 @@ Bash
 
 # Using eselect-repository
 eselect repository add backlight-control git https://github.com/mickadam95/backlight-control.git
+
 emaint sync -r backlight-control
 
 2. Configure USE Flags
