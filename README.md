@@ -55,9 +55,15 @@ gpasswd -a $USER video
 Keybinding Setup
 
 Bind your hardware keys (typically XF86MonBrightnessUp and XF86MonBrightnessDown) to the following commands:
-Action	Command
+
 Brightness Up	/usr/bin/backlight.sh up
 Brightness Down	/usr/bin/backlight.sh down
+
+---
+Please note when unmerging the package the /brightness file will remain under the video group unless manually reset
+
+sudo chown root:root /sys/class/backlight/*/brightness
+sudo chmod 644 /sys/class/backlight/*/brightness
 
 ---
 
@@ -73,7 +79,6 @@ If /sys/class/backlight/ is empty, ensure your kernel is configured with:
 Permission Denied
 
 Check the permissions on the hardware file:
-Bash
 
 ls -l /sys/class/backlight/*/brightness
 
