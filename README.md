@@ -22,11 +22,9 @@ A lightweight, system-wide backlight control solution for Linux, designed specif
 The recommended way to add this custom Gentoo overlay is via `eselect repository`.
 
 # Install eselect-repository if you haven't already
-emerge --ask app-eselect/eselect-repository
+sudo eselect repository add backlight-control git https://github.com/mickadam95/backlight-control.git
 
-# Add and sync the repo
-eselect repository add backlight-control git [https://github.com/mickadam95/backlight-control.git](https://github.com/mickadam95/backlight-control.git)
-
+# Sync the repo
 emerge --sync backlight-control
 
 
