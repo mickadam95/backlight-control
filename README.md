@@ -22,21 +22,21 @@ A lightweight, system-wide backlight control solution for Linux, designed specif
 The recommended way to add this custom Gentoo overlay is via `eselect repository`.
 
 # Install eselect-repository if you haven't already
-sudo eselect repository add backlight-control git https://github.com/mickadam95/backlight-control.git
+    sudo eselect repository add backlight-control git https://github.com/mickadam95/backlight-control.git
 
 # Sync the repo
-emerge --sync backlight-control
+    emerge --sync backlight-control
 
 
 ### 2. Configure USE Flags
 
 Decide if you want the dedicated group management. Add this to /etc/portage/package.use/backlight:
 
-sys-power/backlight backlight_group
+    sys-power/backlight backlight_group
 
 ### 3. Emerge
 
-emerge --ask sys-power/backlight
+    emerge --ask sys-power/backlight
 
 ---
 
@@ -44,24 +44,23 @@ Configuration & Permissions
 
 If you enabled the backlight_group USE flag:
 
-    Add your user to the video group
+Add your user to the video group
     
-
-gpasswd -a $USER video
+    gpasswd -a $USER video
 
 
 Keybinding Setup
 
 Bind your hardware keys (typically XF86MonBrightnessUp and XF86MonBrightnessDown) to the following commands:
 
-Brightness Up	/usr/bin/backlight.sh up
-Brightness Down	/usr/bin/backlight.sh down
+    Brightness Up	/usr/bin/backlight.sh up
+    Brightness Down	/usr/bin/backlight.sh down
 
 ---
 Please note when unmerging the package the /brightness file will remain under the video group unless manually reset
 
-sudo chown root:root /sys/class/backlight/*/brightness
-sudo chmod 644 /sys/class/backlight/*/brightness
+    sudo chown root:root /sys/class/backlight/*/brightness
+    sudo chmod 644 /sys/class/backlight/*/brightness
 
 ---
 
@@ -70,15 +69,15 @@ No backlight detected
 
 If /sys/class/backlight/ is empty, ensure your kernel is configured with:
 
-    Device Drivers -> Graphics support -> Backlight & LCD device support
+Device Drivers -> Graphics support -> Backlight & LCD device support
 
-    The specific driver for your GPU (e.g., CONFIG_DRM_I915 or CONFIG_DRM_AMDGPU).
+The specific driver for your GPU (e.g., CONFIG_DRM_I915 or CONFIG_DRM_AMDGPU).
 
 Permission Denied
 
 Check the permissions on the hardware file:
 
-ls -l /sys/class/backlight/*/brightness
+    ls -l /sys/class/backlight/*/brightness
 
 If you don't see rw permissions for the video group (e.g., -rw-rw-r-- 1 root video), ensure the backlight_group USE flag was enabled during installation.
 
