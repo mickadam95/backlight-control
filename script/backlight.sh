@@ -15,6 +15,12 @@ CUR=$(cat "$FILE")
 
 STEP=$((MAX / 10))
 
+# Set a minimum brightness cap (e.g., 5% of the maximum brightness)
+MIN=$((MAX * 5 / 100))
+
+# Ensure MIN is always at least 1, so the screen never turns completely off
+[ $MIN -le 0 ] && MIN=1
+
 case "$1" in
   up)
     NEW=$((CUR + STEP))
@@ -22,7 +28,8 @@ case "$1" in
     ;;
   down)
     NEW=$((CUR - STEP))
-    [ $NEW -lt 0 ] && NEW=0
+    # Enforce the minimum cap instead of 0
+    [ $NEW -lt $MIN ] && NEW=$MIN
     ;;
   *)
     echo "Usage: $0 up|down"
